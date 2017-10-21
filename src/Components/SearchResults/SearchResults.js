@@ -7,12 +7,7 @@ class SearchResults extends Component {
         return (
             <div className="SearchResults">
                 <h2>Results</h2>
-                <Tracklist tracks={this.props.searchResults}/>
-                {
-                    // this.props.searchResults.map(track => {
-                    // return `${track.artist} - ${track.name} (${track.album}), `;
-                    // })
-                }
+                <Tracklist music={this.props.searchResults} onAdd={this.props.onAdd}/>
             </div>
         );
     }

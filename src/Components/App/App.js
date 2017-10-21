@@ -6,23 +6,78 @@ import Playlist from '../Playlist/Playlist';
 
 class App extends Component {
     constructor(props) {
-    super(props);
-    const mockArray = [{
-        name: 'Supremacy',
-        artist: 'Muse',
-        album: '2nd law',
-    }, {
-        name: 'ЧПХ',
-        artist: 'Leningrad',
-        album: 'Аврора',
-    }, {
-        name: 'Дома посижу',
-        artist: 'Anacondaz',
-        album: 'Привет Гитлер',
-    }];
-    this.state = { searchResults: mockArray };
-    // this.searchResults = this.searchResults.bind(this);
-  }
+        super(props);
+        this.addTrack = this.addTrack.bind(this);
+        this.removeTrack = this.removeTrack.bind(this);
+        this.updatePlaylistName = this.updatePlaylistName.bind(this);
+        const mockArraySearch = [{
+            id: 1,
+            name: 'Supremacy',
+            artist: 'Muse',
+            album: '2nd law',
+        }, {
+            id: 2,
+            name: 'ЧПХ',
+            artist: 'Leningrad',
+            album: 'Аврора',
+        }, {
+            id: 3,
+            name: 'Дома посижу',
+            artist: 'Anacondaz',
+            album: 'Привет Гитлер',
+        }];
+        const mockArrayPlaylist = [{
+            id: 4,
+            name: 'Nube',
+            artist: 'Linking Park',
+            album: 'Hello',
+        }, {
+            id: 5,
+            name: 'Song 2',
+            artist: 'Blur',
+            album: 'Album 3',
+        }, {
+            id: 6,
+            name: 'History Song',
+            artist: 'Gorillaz',
+            album: '1984',
+        }];
+        this.state = {
+            searchResults: mockArraySearch,
+            playlistName: 'New Playlistttt',
+            playlistTracks: mockArrayPlaylist,
+        };
+    }
+
+    removeTrack(trackForRemove) {
+        let searchResults = this.state.searchResults;
+        let playlistTracks = this.state.playlistTracks.filter(function (track) {
+            return track.id !== trackForRemove.id;
+        });
+        searchResults.push(trackForRemove);
+        this.setState({
+            playlistTracks: playlistTracks,
+            searchResults: searchResults,
+        });
+    }
+
+    addTrack(trackToAdd) {
+        let playlistTracks = this.state.playlistTracks;
+        let searchResults = this.state.searchResults.filter(function (track) {
+            return track.id !== trackToAdd.id;
+        });
+        if (!playlistTracks.includes(trackToAdd.id)) {
+            playlistTracks.push(trackToAdd);
+            this.setState({
+                playlistTracks: playlistTracks,
+                searchResults: searchResults,
+            });
+        }
+    }
+
+    updatePlaylistName(name) {
+        this.setState({playlistName: name});
+    }
 
     render() {
         return (
@@ -31,8 +86,12 @@ class App extends Component {
                 <div className="App">
                     <SearchBar/>
                     <div className="App-playlist">
-                        <SearchResults searchResults={this.state.searchResults}/>
-                        <Playlist/>
+                        <SearchResults onAdd={this.addTrack}
+                                       searchResults={this.state.searchResults}/>
+                        <Playlist playlistName={this.props.playlistName}
+                                  playlistTracks={this.state.playlistTracks}
+                                  onRemove={this.removeTrack}
+                                  onNameChange={this.updatePlaylistName}/>
                     </div>
                 </div>
             </div>
