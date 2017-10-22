@@ -49,6 +49,7 @@ class App extends Component {
             searchResults: [],
             playlistName: 'New Playlistttt',
             playlistTracks: [],
+            isAuthorized: false,
         };
     }
 
@@ -89,7 +90,11 @@ class App extends Component {
 
     search(term) {
         Spotify.search(term).then(tracks => {
-            this.setState({ searchResults: tracks});
+            this.setState({
+                searchResults: tracks,
+                isAuthorized: true,
+            });
+            console.log(tracks);
         });
         console.log(term);
     }
@@ -101,6 +106,7 @@ class App extends Component {
                 <div className="App">
                     <SearchBar
                         onSearch={this.search}
+                        isAuthorized={this.state.isAuthorized}
                     />
                     <div className="App-playlist">
                         <SearchResults
